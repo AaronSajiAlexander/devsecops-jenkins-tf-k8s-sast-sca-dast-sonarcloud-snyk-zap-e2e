@@ -61,6 +61,16 @@ pipeline {
 		  sh ('kubectl apply -f deployment.yaml --namespace=devsecops')
 		}
 	      }
+		post {
+        success {
+          echo 'Deployment Success'
+          jiraSendDeploymentInfo()  // Send deployment info to Jira on successful deployment
+        }
+        failure {
+          echo 'Deployment Failed'
+          jiraSendDeploymentInfo()  // Send deployment failure info to Jira if deployment fails
+        }
+      }
    	}
 	   
 	stage ('wait_for_testing'){
