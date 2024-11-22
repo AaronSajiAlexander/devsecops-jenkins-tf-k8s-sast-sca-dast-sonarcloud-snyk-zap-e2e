@@ -10,29 +10,29 @@ pipeline {
 			}
     }
 
-	// stage('RunSCAAnalysisUsingSnyk') {
-    //         steps {		
-	// 			withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-	// 				sh 'mvn snyk:test -fn'
-	// 			}
-	// 		}
-	// 		post { 
-    //     		failure { 
-	// 			echo  'post failure started'
-    //       		// previous to version 2.0.0 you must provide parameters to this command (see below)!
-    //       		jiraSendBuildInfo() 
-	// 			echo  'post failure ended'
-    //     		} 
-    // 		}
-	// }	
-
 	stage('RunSCAAnalysisUsingSnyk') {
             steps {		
 				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
 					sh 'mvn snyk:test -fn'
 				}
 			}
-    }	
+			post { 
+        		failure { 
+				echo  'post failure started'
+          		// previous to version 2.0.0 you must provide parameters to this command (see below)!
+          		jiraSendBuildInfo() 
+				echo  'post failure ended'
+        		} 
+    		}
+	}	
+
+	// stage('RunSCAAnalysisUsingSnyk') {
+    //         steps {		
+	// 			withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+	// 				sh 'mvn snyk:test -fn'
+	// 			}
+	// 		}
+    // }	
 	   
 	stage('Build') { 
             steps { 
